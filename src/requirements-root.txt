@@ -1,0 +1,10 @@
+Django
+django-cors-headers
+django-debug-toolbar
+django_extensions
+django-filter
+django-rest-swagger
+djangorestframework
+djangorestframework-gis
+psycopg2-binary
+sentry-sdk

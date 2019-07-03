@@ -1,0 +1,36 @@
+version: "3.0"
+services:
+  database:
+    image: amsterdam/postgres11
+    ports:
+      - "5410:5432"
+    environment:
+      POSTGRES_DB: ds_demo
+      POSTGRES_USER: ds_demo
+      POSTGRES_PASSWORD: insecure
+    volumes:
+      - "~/.ssh/datapunt.key:/root/.ssh/datapunt.key"
+  web:
+    build: src/
+    ports:
+      - "8000:8000"
+    links:
+      - database
+    environment:
+      http_proxy:
+      https_proxy:
+      UWSGI_HTTP: ":8000"
+      UWSGI_MODULE: "ds_demo.wsgi"
+      UWSGI_CALLABLE: "application"
+      UWSGI_MASTER: 1
+      UWSGI_STATIC_MAP: "/ds_demo/static=/static"
+      DATAPUNT_API_URL: ${DATAPUNT_API_URL:-https://api.data.amsterdam.nl/}
+      SECRET_KEY: insecure
+      DATABASE_NAME: ds_demo
+      DATABASE_USER: ds_demo
+      DATABASE_HOST: database
+      DATABASE_PORT: 5432
+      DATABASE_PASSWORD: insecure
+    volumes:
+      - ./src:/app
+    command: uwsgi --py-auto-reload=1
