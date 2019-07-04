@@ -20,5 +20,5 @@ def health(request):
 
 
 urlpatterns = [
-    path('health', health),
+    path('status/health', health),
 ]
