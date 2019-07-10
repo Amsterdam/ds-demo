@@ -1,6 +1,9 @@
 from django.db import connection
 from django.http import HttpResponse
-from django.urls import path
+from django.urls import include, path
+from rest_framework import routers
+
+from ds_demo.schemas import views
 
 
 def health(request):
@@ -19,6 +22,10 @@ def health(request):
         "Connectivity OK", content_type='text/plain', status=200)
 
 
+router = routers.DefaultRouter()
+router.register(r'schemas', views.SchemaViewSet)
+
 urlpatterns = [
     path('status/health', health),
+    path('ds_demo/', include(router.urls)),
 ]

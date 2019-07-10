@@ -10,8 +10,10 @@ from ds_demo.settings_databases import LocationKey,\
     OVERRIDE_HOST_ENV_VAR,\
     OVERRIDE_PORT_ENV_VAR
 
-INSTALLED_APPS += [
+import ds_demo
 
+INSTALLED_APPS += [
+    'ds_demo.schemas',
 ]
 
 ROOT_URLCONF = 'ds_demo.urls'
