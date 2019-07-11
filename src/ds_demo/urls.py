@@ -3,7 +3,8 @@ from django.http import HttpResponse
 from django.urls import include, path
 from rest_framework import routers
 
-from ds_demo.schemas import views
+from ds_demo.datasets.views import DataViewSet
+from ds_demo.schemas.views import SchemaViewSet
 
 
 def health(request):
@@ -23,7 +24,8 @@ def health(request):
 
 
 router = routers.DefaultRouter()
-router.register(r'schemas', views.SchemaViewSet)
+router.register(r'schemas', SchemaViewSet)
+router.register(r'datasets/(?P<dataset_and_id>.+)', DataViewSet)
 
 urlpatterns = [
     path('status/health', health),

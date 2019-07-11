@@ -1,3 +1,4 @@
+import copy
 import json
 import os
 
@@ -20,9 +21,9 @@ class SchemaTest(TestCase):
         filename = os.path.join(os.path.dirname(__file__), 'fixtures', 'bouwdossiers.schema.json')
         with open(filename) as schema:
             loaded_schema = json.load(schema)
-            self.bouwdossiers['schema'] = json.dumps(loaded_schema)
-            del(loaded_schema['properties'])
-            self.invalid_schema = json.dumps(loaded_schema)
+            self.bouwdossiers['schema'] = loaded_schema
+            self.invalid_schema = copy.deepcopy(loaded_schema)
+            del(self.invalid_schema['properties'])
         self.client = APIClient()
 
     def test_get_schema(self):
@@ -31,17 +32,19 @@ class SchemaTest(TestCase):
         self.assertListEqual(response.data['results'], [])
 
     def test_upload_schema(self):
-        response = self.client.post('/ds_demo/schemas/', self.bouwdossiers)
+        response = self.client.post('/ds_demo/schemas/', self.bouwdossiers, format='json')
         self.assertEquals(response.status_code, 201)
         self.assertEquals(Schema.objects.count(), 1)
         self.assertEquals(Schema.objects.all()[0].name, "bouwdossiers")
 
     def test_update_schema(self):
-        self.client.post('/ds_demo/schemas/', self.bouwdossiers)
+        response = self.client.post('/ds_demo/schemas/', self.bouwdossiers, format='json')
+        self.assertEquals(response.status_code, 201)
+
         updated = self.bouwdossiers.copy()
         updated['description'] = self.new_description
 
-        response = self.client.put('/ds_demo/schemas/'+self.bouwdossiers['name']+'/', updated)
+        response = self.client.put('/ds_demo/schemas/'+self.bouwdossiers['name']+'/', updated, format='json')
         self.assertEquals(response.status_code, 200)
         self.assertEquals(Schema.objects.count(), 1)
         self.assertEquals(Schema.objects.all()[0].description, self.new_description)
@@ -50,5 +53,5 @@ class SchemaTest(TestCase):
         invalid = self.bouwdossiers.copy()
         invalid['schema'] = self.invalid_schema
 
-        response = self.client.post('/ds_demo/schemas/', invalid)
+        response = self.client.post('/ds_demo/schemas/', invalid, format='json')
         self.assertEquals(response.status_code, 400)

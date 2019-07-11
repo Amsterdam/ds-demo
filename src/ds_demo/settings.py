@@ -14,6 +14,7 @@ import ds_demo
 
 INSTALLED_APPS += [
     'ds_demo.schemas',
+    'ds_demo.datasets',
 ]
 
 ROOT_URLCONF = 'ds_demo.urls'

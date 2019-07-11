@@ -5,7 +5,7 @@ from django.test import TestCase
 from jsonschema import validate, Draft7Validator
 from jsonschema.exceptions import ValidationError
 
-from ds_demo.schemas.serializers import schema_filename
+from ds_demo.schemas.views import schema_filename
 
 
 class SchemaValidationTest(TestCase):

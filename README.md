@@ -39,7 +39,6 @@ Open your browser with the [health-check](http://localhost:8000/heatlth)
 
     curl -X POST \
       http://localhost:8000/ds_demo/schemas/ \
-      -H 'Content-Length: 3280' \
       -H 'Content-Type: application/json' \
       -d '{
                 "name": "bouwdossiers",
@@ -120,3 +119,53 @@ Open your browser with the [health-check](http://localhost:8000/heatlth)
                     "additionalProperties": false
                 }
             }'
+            
+After which you can upload an instance of the data:
+
+    curl -X POST \
+      http://localhost:8000/ds_demo/datasets/bouwdossiers/ \
+      -H 'Content-Type: application/json' \
+      -d '{
+      "id": "sa12153",
+      "dataset": "stadsarchief",
+      "type": "bouwdossiers",
+      "dossiernummer": "12153",
+      "titel": "Prinsengracht 638:29629",
+      "datering": "1997",
+      "dossiertype": "monument",
+      "openbaar": true,
+      "stadsdeel": "https://api.data.amsterdam.nl/gebieden/stadsdeel/03630000000018/",
+      "adressen": [
+        "https://api.data.amsterdam.nl/bag/verblijfsobject/0363010000785119/"
+      ],
+      "subdossiers": [
+        {
+          "titel": "Aanvraag en behandeling",
+          "bestanden": [
+            "https://BWT.Uitplaatsing.hcp-a.basis.lan/rest/SA/12153/SA00087351_00001.jpg",
+            "https://BWT.Uitplaatsing.hcp-a.basis.lan/rest/SA/12153/SA00087351_00002.jpg",
+            "https://BWT.Uitplaatsing.hcp-a.basis.lan/rest/SA/12153/SA00087355_00001.jpg"
+          ]
+        },
+        {
+          "titel": "Tekeningen",
+          "bestanden": [
+            "https://BWT.Uitplaatsing.hcp-a.basis.lan/rest/SA/12153/SA00087356_00001.jpg"
+          ]
+        },
+        {
+          "titel": "Voortgang, documenten",
+          "bestanden": [
+            "https://BWT.Uitplaatsing.hcp-a.basis.lan/rest/SA/12153/SA00087360_00001.jpg"
+          ]
+        }
+      ]
+    }'
+    
+The instance(s) are now available:
+
+    curl -X GET http://localhost:8000/ds_demo/datasets/bouwdossiers/
+    
+and
+
+    curl -X GET http://localhost:8000/ds_demo/datasets/bouwdossiers/sa12153/
