@@ -11,4 +11,4 @@ source .jenkins/docker-migrate.sh
 # flake8 --config=./flake.cfg ./ds_demo
 
 echo "Running unit tests"
-python ./manage.py test
+./manage.py test
