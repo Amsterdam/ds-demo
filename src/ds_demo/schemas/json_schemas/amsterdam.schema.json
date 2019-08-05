@@ -11,6 +11,19 @@
     "dataset": {
       "type": "string"
     },
+    "description": {
+      "type": "string"
+    },
+    "classifcation": {
+        "type": "array",
+        "items": {
+          "type": "string",
+          "enum": [ "BBN1", "BBN2", "BBN3" ]
+        },
+        "uniqueItems": true,
+        "minItems": 1,
+        "maxItems": 1
+      },
     "uri": {
       "type": "string",
       "format": "uri"
